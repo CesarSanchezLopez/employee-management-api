@@ -1,4 +1,6 @@
-﻿using EmployeeManagement.Infrastructure.Persistence.Context;
+﻿using EmployeeManagement.Application.Repositories;
+using EmployeeManagement.Infrastructure.Persistence.Context;
+using EmployeeManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,8 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection")));
+        
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
         return services;
     }
