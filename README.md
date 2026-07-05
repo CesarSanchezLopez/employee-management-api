@@ -182,4 +182,4 @@ Admin123*
 
 # Autor
 
-Desarrollado por **César Sánchez** como solución para la prueba técnica.
+Desarrollado por **César Sánchez**.
