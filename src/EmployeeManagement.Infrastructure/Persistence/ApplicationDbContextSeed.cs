@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Enums;
 using EmployeeManagement.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Infrastructure.Persistence;
 
@@ -112,5 +113,20 @@ public static class ApplicationDbContextSeed
             });
 
         await context.SaveChangesAsync();
+
+        // Admin User
+        var admin = await context.AppUsers
+            .FirstOrDefaultAsync(u => u.Username == "admin");
+        if (admin == null)
+        {
+            context.AppUsers.Add(new AppUser
+            {
+                Username = "admin",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123*"),
+                Role = UserRole.Admin
+            });
+
+            await context.SaveChangesAsync();
+        }
     }
 }

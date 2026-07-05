@@ -20,6 +20,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<PositionHistory> PositionHistories => Set<PositionHistory>();
 
+    public DbSet<AppUser> AppUsers => Set<AppUser>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

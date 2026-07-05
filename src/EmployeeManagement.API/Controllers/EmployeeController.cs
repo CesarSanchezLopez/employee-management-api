@@ -1,8 +1,10 @@
 ﻿using EmployeeManagement.Application.DTOs;
 using EmployeeManagement.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.API.Controllers;
+
 
 [ApiController]
 [Route("api/[controller]")]
@@ -15,6 +17,7 @@ public class EmployeeController : ControllerBase
         _employeeService = employeeService;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetAll()
     {
@@ -23,6 +26,7 @@ public class EmployeeController : ControllerBase
         return Ok(employees);
     }
 
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<EmployeeDto>> GetById(int id)
     {
@@ -34,10 +38,11 @@ public class EmployeeController : ControllerBase
         return Ok(employee);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
-    public async Task<ActionResult<EmployeeDto>> Create(EmployeeDto employeeDto)
+    public async Task<ActionResult<EmployeeDto>> Create(EmployeeRequestDto dto)
     {
-        var employee = await _employeeService.CreateAsync(employeeDto);
+        var employee = await _employeeService.CreateAsync(dto);
 
         return CreatedAtAction(
             nameof(GetById),
@@ -45,10 +50,11 @@ public class EmployeeController : ControllerBase
             employee);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, EmployeeDto employeeDto)
+    public async Task<IActionResult> Update(int id, EmployeeRequestDto dto)
     {
-        var updated = await _employeeService.UpdateAsync(id, employeeDto);
+        var updated = await _employeeService.UpdateAsync(id, dto);
 
         if (!updated)
             return NotFound();
@@ -56,6 +62,7 @@ public class EmployeeController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -65,5 +72,14 @@ public class EmployeeController : ControllerBase
             return NotFound();
 
         return NoContent();
+    }
+
+    [Authorize]
+    [HttpGet("by-department/{departmentId:int}")]
+    public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetByDepartment(int departmentId)
+    {
+        var employees = await _employeeService.GetByDepartmentAsync(departmentId);
+
+        return Ok(employees);
     }
 }

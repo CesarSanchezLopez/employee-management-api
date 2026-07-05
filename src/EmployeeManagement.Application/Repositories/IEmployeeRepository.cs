@@ -14,5 +14,7 @@ public interface IEmployeeRepository
 
     Task DeleteAsync(Employee employee);
 
+    Task<IEnumerable<Employee>> GetByDepartmentAsync(int departmentId);
+
     Task<int> SaveChangesAsync();
 }

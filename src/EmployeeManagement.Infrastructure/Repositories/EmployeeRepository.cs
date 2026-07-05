@@ -50,6 +50,18 @@ public class EmployeeRepository : IEmployeeRepository
         return Task.CompletedTask;
     }
 
+    public async Task<IEnumerable<Employee>> GetByDepartmentAsync(int departmentId)
+    {
+        return await _context.Employees
+            .Include(e => e.Department)
+            .Include(e => e.EmployeeProjects)
+                .ThenInclude(ep => ep.Project)
+            .Include(e => e.PositionHistories)
+            .Where(e => e.DepartmentId == departmentId)
+            .Where(e => e.EmployeeProjects.Any())
+            .ToListAsync();
+    }
+
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();

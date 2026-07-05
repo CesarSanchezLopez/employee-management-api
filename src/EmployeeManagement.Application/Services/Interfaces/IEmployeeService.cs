@@ -8,9 +8,12 @@ public interface IEmployeeService
 
     Task<EmployeeDto?> GetByIdAsync(int id);
 
-    Task<EmployeeDto> CreateAsync(EmployeeDto employeeDto);
+    Task<EmployeeDto> CreateAsync(EmployeeRequestDto dto);
 
-    Task<bool> UpdateAsync(int id, EmployeeDto employeeDto);
+    Task<bool> UpdateAsync(int id, EmployeeRequestDto dto);
 
     Task<bool> DeleteAsync(int id);
+
+    Task<IEnumerable<EmployeeDto>> GetByDepartmentAsync(int departmentId);
+
 }

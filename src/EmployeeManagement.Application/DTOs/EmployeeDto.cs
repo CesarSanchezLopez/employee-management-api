@@ -10,11 +10,15 @@ public class EmployeeDto
 
     public decimal Salary { get; set; }
 
-    public PositionType CurrentPosition { get; set; }
-
     public int DepartmentId { get; set; }
 
     public string Department { get; set; } = string.Empty;
+
+    public int CurrentPositionId { get; set; }
+
+    public string CurrentPosition { get; set; } = string.Empty;
+
+    public decimal Bonus { get; set; }
 
     public List<string> Projects { get; set; } = new();
 
